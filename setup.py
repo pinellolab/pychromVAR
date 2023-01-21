@@ -1,5 +1,4 @@
-from setuptools import setup, Extension
-from os import path
+from setuptools import setup
 
 if __name__ == "__main__":
     setup()
