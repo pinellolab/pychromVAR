@@ -36,7 +36,7 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
 
     return None
 
-def compute_exp(count: np.array) -> np.array:
+def compute_expectation(count: np.array) -> np.array:
     """
     Compute expetation accessibility per peak and per cell by assuming identical 
     read probability per peak for each cell with a sequencing depth matched to that cell
