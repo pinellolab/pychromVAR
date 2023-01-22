@@ -2,12 +2,13 @@ from typing import Union
 from pysam import Fastafile
 from anndata import AnnData
 from mudata import MuData
-
+import numpy as np
 from tqdm import tqdm
 
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     """
-    Add DNA sequence to data object
+    Add the DNA sequence of each peak to data object. 
+    The sequences will be used in GC bias estimation and motif binding sites matching.
 
     Args:
         data (Union[AnnData, MuData]): 
@@ -35,3 +36,23 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
 
     return None
 
+def compute_exp(count: np.array) -> np.array:
+    """
+    Compute expetation accessibility per peak and per cell by assuming identical 
+    read probability per peak for each cell with a sequencing depth matched to that cell
+    observed sequencing depth.
+
+    Args:
+        count (_type_): _description_
+    """
+
+    a = np.sum(count, axis=0)
+    a = np.expand_dims(a, axis=0)
+    a /= np.sum(count)
+
+    b = np.sum(count, axis=1)
+    b = np.expand_dims(b, axis=1)
+
+    exp = np.dot(b, a)
+
+    return exp
