@@ -4,6 +4,7 @@ from anndata import AnnData
 from mudata import MuData
 import numpy as np
 from tqdm import tqdm
+import re
 
 def add_motif_to_anndata(data: Union[AnnData, MuData], motifs):
     """
@@ -51,7 +52,7 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     adata.uns['seq'] = [None] * adata.n_vars
 
     for i in tqdm(range(adata.n_vars)):
-        peak = adata.var_names[i].split(delimiter)
+        peak = re.split(delimiter, adata.var_names[i])
         chrom, start, end = peak[0], int(peak[1]), int(peak[2])
         adata.uns['seq'][i] = fasta.fetch(chrom, start, end).upper()
 
