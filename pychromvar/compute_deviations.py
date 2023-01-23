@@ -49,6 +49,7 @@ def compute_deviations(data: Union[AnnData, MuData]):
     mean_bg_dev = np.mean(bg_dev, axis=0)
     std_bg_dev = np.std(bg_dev, axis=0)
 
-    adata.obsm['chromvar'] = (obs_dev - mean_bg_dev) / std_bg_dev
+    adata.obsm['chromvar_dev'] = obs_dev - mean_bg_dev
+    adata.obsm['chromvar_z'] = adata.obsm['chromvar_dev'] / std_bg_dev
     
     return None

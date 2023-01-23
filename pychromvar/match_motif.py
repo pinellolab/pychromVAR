@@ -1,18 +1,24 @@
-from typing import Union
+import os
+import numpy as np
+
+from typing import Union, Literal, get_args
 from tqdm import tqdm
 import MOODS.scan
 import MOODS.tools
 import MOODS.parsers
 from anndata import AnnData
 from mudata import MuData
-from pysam import Fastafile
-import numpy as np
+
+from .utils import add_motif_to_anndata
+
+_BACKGROUND = Literal["subject", "genome", "even"]
 
 
-def match_motif(data: Union[AnnData, MuData], motifs,
-            pseudocounts=0.0001, pvalue=0.0001):
+def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_value=5e-05,
+                background: _BACKGROUND = "subject", genome_file: str = None):
     """
-    Perform motif matching to predict binding sites
+    Perform motif matching to predict binding sites using MOODS. 
+    This function wraps 
 
     Args:
         data (Union[AnnData, MuData]): 
@@ -20,7 +26,16 @@ def match_motif(data: Union[AnnData, MuData], motifs,
         motifs: 
             List of motifs
         pseudocounts:
-            Pseudocounts
+            Pseudocounts for each nucleotide. Default value is 0.0001
+        p_value:
+            P-value threshold for motif matching. Default: 5e-05
+        background:
+            Background distribution of nucleotides for computing thresholds from p-value. 
+            Three options are available: "subject" to use the subject sequences, "genome" to use the
+            whole genome (need to provide a genome file), or even using 0.25 for each base.
+            Default: "subject".
+        genome_file:
+            If background is set to genome, a genome file must be provided. Default: None
     """
 
     if isinstance(data, AnnData):
@@ -33,49 +48,58 @@ def match_motif(data: Union[AnnData, MuData], motifs,
 
     assert "seq" in adata.uns_keys(), "Cannot find sequences, please first run add_peak_seq!"
 
+    options = get_args(_BACKGROUND)
+    assert background in options, f"'{background}' is not in {options}"
+
+    if background == "genome":
+        assert os.path.exists(genome_file), f"{genome_file} does not exist!"
+
+    add_motif_to_anndata(data=adata, motifs=motifs)
+
+    # compute background distribution
+    seq = ""
+    if background == "subject":
+        for i in range(adata.n_vars):
+            seq += adata.uns['seq'][i]
+        bg = MOODS.tools.bg_from_sequence_dna(seq, pseudocounts)
+    elif background == "genome":
+        # TODO
+        bg = MOODS.tools.flat_bg(4)
+    else:
+        bg = MOODS.tools.flat_bg(4)
+
     # prepare motif data
-    matrices = [None] * len(motifs)
-    adata.uns['motif_id'] = [None] * len(motifs)
-    adata.uns['motif_name'] = [None] * len(motifs)
+    n_motifs = len(motifs)
 
-    for i in range(len(motifs)):
-        motif = motifs[i]
-        adata.uns['motif_id'][i] = motif.matrix_id
-        adata.uns['motif_name'][i] = motif.name
-        motif.pseudocounts = {
-            'A': pseudocounts, 'C': pseudocounts, 'G': pseudocounts, 'T': pseudocounts}
-        pssm = motif.pssm
-        matrices[i] = (tuple(pssm['A']),
-               tuple(pssm['C']),
-               tuple(pssm['G']),
-               tuple(pssm['T']))
+    matrices = [None] * 2 * n_motifs
+    thresholds = [None] * 2 * n_motifs
+    for i, motif in enumerate(motifs):
+        counts = (tuple(motif.counts['A']),
+                  tuple(motif.counts['C']),
+                  tuple(motif.counts['G']),
+                  tuple(motif.counts['T']))
 
-    matrices_reverse = [MOODS.tools.reverse_complement(matrix) for matrix in matrices]
+        matrices[i] = MOODS.tools.log_odds(counts, bg, pseudocounts)
+        matrices[i+n_motifs] = MOODS.tools.reverse_complement(matrices[i])
+
+        thresholds[i] = MOODS.tools.threshold_from_p(matrices[i], bg, p_value)
+        thresholds[i+n_motifs] = thresholds[i]
 
     # create scanner
-    scanner_forward = MOODS.scan.Scanner(7)
-    scanner_reverse = MOODS.scan.Scanner(7)
+    scanner = MOODS.scan.Scanner(7)
+    scanner.set_motifs(matrices=matrices, bg=bg, thresholds=thresholds)
+    motif_match_res = np.zeros(shape=(adata.n_vars, n_motifs))
 
-    # compute threshold
-    bg = MOODS.tools.flat_bg(4)
-    thresholds = [MOODS.tools.threshold_from_p(m, bg, pvalue) for m in matrices]
-
-    scanner_forward.set_motifs(matrices=matrices, bg=bg, thresholds=thresholds)
-    scanner_reverse.set_motifs(matrices=matrices_reverse, bg=bg, thresholds=thresholds)
-
-    motif_match_res = np.zeros(shape=(adata.n_vars, len(motifs)))
+    # for each peak
     for i in tqdm(range(adata.n_vars)):
-        results_forward = scanner_forward.scan(adata.uns['seq'][i])
-        results_reverse = scanner_reverse.scan(adata.uns['seq'][i])
+        results = scanner.scan(adata.uns['seq'][i])
+        # for each motif
+        for j in range(n_motifs):
+            if len(results[j]) > 0:
+                motif_match_res[i, j] = 1
+            elif len(results[j+n_motifs]) > 0:
+                motif_match_res[i, j] = 1
 
-        # check the matching result for each motif
-        for j, res in enumerate(results_forward):
-            motif_match_res[i, j] = len(res)
-
-        for j, res in enumerate(results_reverse):
-            motif_match_res[i, j] = len(res)
-
-    motif_match_res[motif_match_res > 0] = 1
     adata.varm['motif_match'] = motif_match_res
 
     return None

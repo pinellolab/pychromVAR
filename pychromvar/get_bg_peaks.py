@@ -1,5 +1,4 @@
 from typing import Union
-from tqdm import tqdm
 from anndata import AnnData
 from mudata import MuData
 import numpy as np

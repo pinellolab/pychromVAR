@@ -5,6 +5,27 @@ from mudata import MuData
 import numpy as np
 from tqdm import tqdm
 
+def add_motif_to_anndata(data: Union[AnnData, MuData], motifs):
+    """
+    Add motif information to anndata object.
+
+    Args:
+        data (Union[AnnData, MuData]): 
+            AnnData object with peak counts or MuData object with 'atac' modality.
+        motifs: 
+            List of motifs
+    """
+
+    data.uns['motif_id'] = [None] * len(motifs)
+    data.uns['motif_name'] = [None] * len(motifs)
+
+    for i in range(len(motifs)):
+        data.uns['motif_id'][i] = motifs[i].matrix_id
+        data.uns['motif_name'][i] = motifs[i].name
+
+    return None
+
+
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     """
     Add the DNA sequence of each peak to data object. 
@@ -32,7 +53,7 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     for i in tqdm(range(adata.n_vars)):
         peak = adata.var_names[i].split(delimiter)
         chrom, start, end = peak[0], int(peak[1]), int(peak[2])
-        adata.uns['seq'][i] = fasta.fetch(chrom, start, end)
+        adata.uns['seq'][i] = fasta.fetch(chrom, start, end).upper()
 
     return None
 
