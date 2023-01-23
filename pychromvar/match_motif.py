@@ -15,7 +15,7 @@ _BACKGROUND = Literal["subject", "genome", "even"]
 
 
 def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_value=5e-05,
-                background: _BACKGROUND = "subject", genome_file: str = None):
+                background: _BACKGROUND = "even", genome_file: str = None):
     """
     Perform motif matching to predict binding sites using MOODS. 
     This function wraps 
@@ -61,7 +61,7 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
     if background == "subject":
         for i in range(adata.n_vars):
             seq += adata.uns['seq'][i]
-        bg = MOODS.tools.bg_from_sequence_dna(seq, pseudocounts)
+        bg = MOODS.tools.bg_from_sequence_dna(seq, 0)
     elif background == "genome":
         # TODO
         bg = MOODS.tools.flat_bg(4)
