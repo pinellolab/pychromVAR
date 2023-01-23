@@ -2,6 +2,7 @@ from typing import Union
 from anndata import AnnData
 from mudata import MuData
 import numpy as np
+from numba import jit
 
 from .utils import compute_expectation
 
