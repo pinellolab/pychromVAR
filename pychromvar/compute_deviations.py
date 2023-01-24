@@ -2,6 +2,7 @@ from typing import Union
 from anndata import AnnData
 from mudata import MuData
 import numpy as np
+from tqdm import tqdm
 from numba import jit
 
 from .utils import compute_expectation
@@ -38,7 +39,7 @@ def compute_deviations(data: Union[AnnData, MuData]):
     n_bg_peaks = adata.varm['bg_peaks'].shape[1]
     bg_dev = np.zeros(shape=(n_bg_peaks, adata.n_obs, len(adata.uns['motif_name'])), dtype=np.float32)
 
-    for i in range(n_bg_peaks):
+    for i in tqdm(range(n_bg_peaks)):
         bg_peak_idx = adata.varm['bg_peaks'][:, i]
         bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose()
 

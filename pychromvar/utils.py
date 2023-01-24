@@ -3,6 +3,7 @@ from pysam import Fastafile
 from anndata import AnnData
 from mudata import MuData
 import numpy as np
+import scipy as sp
 from tqdm import tqdm
 import re
 
@@ -69,11 +70,11 @@ def compute_expectation(count: np.array) -> np.array:
     """
 
     a = np.sum(count, axis=0)
-    a = np.expand_dims(a, axis=0)
+    a = sp.sparse.csr_matrix(np.expand_dims(a, axis=0)) 
     a /= np.sum(count)
 
     b = np.sum(count, axis=1)
-    b = np.expand_dims(b, axis=1)
+    b = sp.sparse.csr_matrix(np.expand_dims(b, axis=1))
 
     exp = np.dot(b, a)
 

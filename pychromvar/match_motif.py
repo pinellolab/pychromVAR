@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import scipy as sp
 
 from typing import Union, Literal, get_args
 from tqdm import tqdm
@@ -100,6 +101,6 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
             elif len(results[j+n_motifs]) > 0:
                 motif_match_res[i, j] = 1
 
-    adata.varm['motif_match'] = motif_match_res
+    adata.varm['motif_match'] = sp.sparse.csr_matrix(motif_match_res)
 
     return None
