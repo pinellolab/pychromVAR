@@ -14,10 +14,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
             AnnData object with peak counts or MuData object with 'atac' modality.
         niterations (int, optional): 
             Number of background peaks to sample. Defaults to 50.
-        w (float, optional): 
-            Parameter controlling similarity of background peaks. Defaults to 0.1.
-        bs (int, optional): 
-            Bin size parameter. Defaults to 50.
+        n_jobs:
 
     Raises:
         TypeError: _description_

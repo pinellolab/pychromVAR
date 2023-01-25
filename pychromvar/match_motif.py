@@ -1,12 +1,13 @@
 import os
 import numpy as np
 import scipy as sp
+from joblib import Parallel, delayed
+from multiprocessing import Pool, cpu_count
 
 from typing import Union, Literal, get_args
 from tqdm import tqdm
 import MOODS.scan
 import MOODS.tools
-import MOODS.parsers
 from anndata import AnnData
 from mudata import MuData
 
@@ -16,7 +17,7 @@ _BACKGROUND = Literal["subject", "genome", "even"]
 
 
 def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_value=5e-05,
-                background: _BACKGROUND = "even", genome_file: str = None):
+                background: _BACKGROUND = "even", genome_file: str = None, n_jobs=1):
     """
     Perform motif matching to predict binding sites using MOODS. 
     This function wraps 
@@ -37,6 +38,8 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
             Default: "subject".
         genome_file:
             If background is set to genome, a genome file must be provided. Default: None
+        n_jobs:
+            Number of cpus used for motif matching. If set to -1, all cpus will be used. Default: 1
     """
 
     if isinstance(data, AnnData):
@@ -89,18 +92,44 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
     # create scanner
     scanner = MOODS.scan.Scanner(7)
     scanner.set_motifs(matrices=matrices, bg=bg, thresholds=thresholds)
-    motif_match_res = np.zeros(shape=(adata.n_vars, n_motifs))
+    motif_match_res = np.zeros(shape=(adata.n_vars, n_motifs), dtype=np.uint8)
 
-    # for each peak
-    for i in tqdm(range(adata.n_vars)):
-        results = scanner.scan(adata.uns['seq'][i])
-        # for each motif
-        for j in range(n_motifs):
-            if len(results[j]) > 0:
-                motif_match_res[i, j] = 1
-            elif len(results[j+n_motifs]) > 0:
-                motif_match_res[i, j] = 1
+    if n_jobs == -1:
+        n_jobs = cpu_count()
+
+    if n_jobs == 1:
+        for i in tqdm(range(adata.n_vars)):
+            results = scanner.scan(adata.uns['seq'][i])
+            for j in range(n_motifs):
+                if len(results[j]) > 0 or len(results[j+n_motifs]) > 0:
+                    motif_match_res[i, j] = 1
+
+    elif n_jobs > 1:
+        # prepare arguments for multiprocessing
+        
+        # seqs = [seq for seq in adata.uns['seq']]
+        # arguments_list = list()
+        #for i in range(adata.n_vars):
+            #arguments = (scanner, adata.uns['seq'][i])
+        #    arguments = (adata.uns['seq'][i])
+        #    arguments_list.append(arguments)
+        all_results = Parallel(n_jobs=n_jobs)(delayed(scanner.scan)(seq) for seq in adata.uns['seq'])
+
+        #with Pool(processes=n_jobs) as pool:
+        #    all_results = pool.map(scanner.scan, seqs)
+
+        # parse outputs
+        for i, results in enumerate(all_results):
+            for j in range(n_motifs):
+                if len(results[j]) > 0 or len(results[j+n_motifs]) > 0:
+                    motif_match_res[i, j] = 1
 
     adata.varm['motif_match'] = sp.sparse.csr_matrix(motif_match_res)
 
     return None
+
+def _match_motif(scanner, seq):
+    results = scanner.scan(seq)
+
+    return results
+

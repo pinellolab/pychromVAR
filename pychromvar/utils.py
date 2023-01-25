@@ -3,9 +3,17 @@ from pysam import Fastafile
 from anndata import AnnData
 from mudata import MuData
 import numpy as np
-import scipy as sp
+from scipy import sparse
 from tqdm import tqdm
 import re
+
+# TODO
+def get_genome(genome:str="hg38"):
+    """_summary_
+
+    Args:
+        genome (str, optional): _description_. Defaults to "hg38".
+    """
 
 def add_motif_to_anndata(data: Union[AnnData, MuData], motifs):
     """
@@ -58,24 +66,3 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
         adata.uns['seq'][i] = fasta.fetch(chrom, start, end).upper()
 
     return None
-
-def compute_expectation(count: np.array) -> np.array:
-    """
-    Compute expetation accessibility per peak and per cell by assuming identical 
-    read probability per peak for each cell with a sequencing depth matched to that cell
-    observed sequencing depth.
-
-    Args:
-        count (_type_): _description_
-    """
-
-    a = np.sum(count, axis=0)
-    a = sp.sparse.csr_matrix(np.expand_dims(a, axis=0)) 
-    a /= np.sum(count)
-
-    b = np.sum(count, axis=1)
-    b = sp.sparse.csr_matrix(np.expand_dims(b, axis=1))
-
-    exp = np.dot(b, a)
-
-    return exp
