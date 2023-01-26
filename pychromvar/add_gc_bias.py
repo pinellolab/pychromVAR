@@ -23,12 +23,12 @@ def add_gc_bias(data: Union[AnnData, MuData]):
     else:
         raise TypeError("Expected AnnData or MuData object with 'atac' modality")
 
-    assert "seq" in adata.uns_keys(), "Cannot find sequences, please first run add_peak_seq!"
+    assert "peak_seq" in adata.uns_keys(), "Cannot find sequences, please first run add_peak_seq!"
 
     bias = np.zeros(adata.n_vars)
 
     for i in tqdm(range(adata.n_vars)):
-        seq = adata.uns['seq'][i]
+        seq = adata.uns['peak_seq'][i]
 
         freq_a = seq.count("A")
         freq_c = seq.count("C")
@@ -40,6 +40,8 @@ def add_gc_bias(data: Union[AnnData, MuData]):
         else:
             bias[i] = (freq_g + freq_c) / (freq_a + freq_c + freq_g + freq_t)
 
-    adata.varm['gc_bias'] = bias
+    adata.var['gc_bias'] = bias
+
+#    adata.varm['gc_bias'] = bias
 
     return None

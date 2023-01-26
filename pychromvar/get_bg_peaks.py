@@ -28,8 +28,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
             "Expected AnnData or MuData object with 'atac' modality")
 
     # check if the object contains bias in Anndata.varm
-    assert "gc_bias" in adata.varm_keys(
-    ), "Cannot find gc bias in the input object, please first run add_gc_bias!"
+    assert "gc_bias" in adata.var.columns, "Cannot find gc bias in the input object, please first run add_gc_bias!"
 
     reads_per_peak = np.log10(np.sum(adata.X, axis=0))
 
@@ -37,7 +36,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
     if isinstance(reads_per_peak, np.matrix):
         reads_per_peak = np.squeeze(np.asarray(reads_per_peak))
 
-    mat = np.array([reads_per_peak, adata.varm['gc_bias']])
+    mat = np.array([reads_per_peak, adata.var['gc_bias'].values])
     chol_cov_mat = np.linalg.cholesky(np.cov(mat))
     trans_norm_mat = sp.linalg.solve_triangular(
         a=chol_cov_mat, b=mat, lower=True).transpose()

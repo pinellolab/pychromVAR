@@ -3,8 +3,16 @@ from anndata import AnnData
 from mudata import MuData
 import numpy as np
 from tqdm import tqdm
+import pandas as pd
 from scipy import sparse
 from multiprocessing import Pool, cpu_count
+import logging
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
+
 
 def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     """
@@ -33,17 +41,18 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     if not isinstance(count, sparse.csr_matrix):
         count = sparse.csr_matrix(count)
 
-    print("Computing expectation reads per cell and peak...")
+    logging.info('computing expectation reads per cell and peak...')
+
     a = np.sum(count, axis=0)
     a /= np.sum(count)
     b = np.sum(count, axis=1)
     expectation = sparse.csr_matrix(np.dot(b, a))
 
-    print("Computing observed deviations...")
+    logging.info('computing observed deviations...')
     obs_dev = _compute_dev((count, expectation, adata.varm['motif_match']))[0]
 
     # compute background deviations for bias-correction
-    print("Computing background deviations...")
+    logging.info('computing background deviations...')
     n_bg_peaks = adata.varm['bg_peaks'].shape[1]
     bg_dev = np.zeros(shape=(n_bg_peaks, adata.n_obs, len(adata.uns['motif_name'])), dtype=np.float32)
 
@@ -76,11 +85,17 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     mean_bg_dev = np.mean(bg_dev, axis=0)
     std_bg_dev = np.std(bg_dev, axis=0)
 
-    adata.obsm['chromvar_dev'] = obs_dev - mean_bg_dev
-    adata.obsm['chromvar_z'] = adata.obsm['chromvar_dev'] / std_bg_dev
+    z = (obs_dev - mean_bg_dev) / std_bg_dev
+    z = np.nan_to_num(z, 0)
     
-    return None
+    if isinstance(data, AnnData):
+        data = MuData({"rna": data, "B": adata2})
+    else:
+        data.mod['chromvar'] = AnnData(z, dtype=np.float32)
+        data.mod['chromvar'].obs_names = adata.obs_names
+        data.mod['chromvar'].var_names = adata.uns['motif_name']
 
+    return None
 
 def _compute_dev(arguments):
     count, expectation, motif_match = arguments
