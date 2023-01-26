@@ -1,3 +1,4 @@
 test/*
 test_old/
 Tutorial/*.h5
+pychromvar/__pycache__
