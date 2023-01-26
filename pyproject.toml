@@ -1,0 +1,37 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "pychromvar"
+author = "Danila Bredikhin"
+author-email = "danila.bredikhin@embl.de"
+description-file = "README.md"
+home-page = "https://github.com/scverse/muon"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Intended Audience :: Science/Research"
+]
+requires-python = ">= 3.6"
+requires = [
+    "scanpy",
+    "anndata",
+    "tqdm",
+    "mudata",
+    "pysam"
+]
+
+[tool.flit.metadata.urls]
+Documentation = "https://muon.readthedocs.io/en/latest/"
+
+[tool.flit.sdist]
+exclude = [".github", "docs/build"]
+
+
+[tool.black]
+line-length = 100
+target-version = ['py37']

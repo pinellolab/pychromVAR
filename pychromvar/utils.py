@@ -2,8 +2,6 @@ from typing import Union
 from pysam import Fastafile
 from anndata import AnnData
 from mudata import MuData
-import numpy as np
-from scipy import sparse
 from tqdm import tqdm
 import re
 
