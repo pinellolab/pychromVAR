@@ -2,36 +2,32 @@
 requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "pychromvar"
-author = "Danila Bredikhin"
-author-email = "danila.bredikhin@embl.de"
-description-file = "README.md"
-home-page = "https://github.com/scverse/muon"
+[project]
+name = "pychromvar"
+version = "0.0.2"
+description = "A python package for chromVAR"
+authors = [
+    {name = "Zhijian Li", email = "lzj1769@gmail.com"}
+]
+readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: BSD License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Intended Audience :: Science/Research"
 ]
 requires-python = ">= 3.6"
-requires = [
-    "scanpy",
+dependencies = [
     "anndata",
-    "tqdm",
     "mudata",
+    "scanpy",
+    "muon",
+    "biopython",
+    "MOODS-python",
     "pysam"
 ]
 
-[tool.flit.metadata.urls]
-Documentation = "https://muon.readthedocs.io/en/latest/"
-
-[tool.flit.sdist]
-exclude = [".github", "docs/build"]
-
-
-[tool.black]
-line-length = 100
-target-version = ['py37']
+[project.urls]
+Source = "https://github.com/lzj1769/pychromVAR"
