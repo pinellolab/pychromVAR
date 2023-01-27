@@ -9,7 +9,6 @@ Coming sooooon!
    :hidden:
 
    install
-   api
 
 .. toctree::
    :caption: NOTEBOOKS
