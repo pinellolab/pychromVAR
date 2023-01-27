@@ -9,11 +9,10 @@ Coming sooooon!
    :hidden:
 
    install
-   api
 
 .. toctree::
    :caption: NOTEBOOKS
    :maxdepth: 2
    :hidden:
 
-   notebooks/run_chromVAR.ipynb
+   notebooks/run_chromVAR
