@@ -9,7 +9,6 @@ It is built on `anndata <https://anndata.readthedocs.io/en/latest/>`__ and
 with `scanpy <https://scanpy.readthedocs.io/en/stable/>`__ and
 `muon <https://muon.readthedocs.io/en/latest/>`__ pipeline.
 
-
 For more methdological detials, please refer to the original `paper <https://www.nature.com/articles/nmeth.4401>`__.
 
 .. toctree::
