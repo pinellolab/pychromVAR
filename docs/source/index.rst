@@ -8,7 +8,7 @@ Coming sooooon!
    :maxdepth: 2
    :hidden:
 
-   install
+   install.md
 
 .. toctree::
    :caption: NOTEBOOKS
