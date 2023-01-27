@@ -2,6 +2,8 @@
 
 import os
 import sys
+from datetime import datetime
+
 sys.path.insert(0, os.path.abspath('../..'))
 
 
@@ -25,6 +27,7 @@ project = 'pychromVAR'
 author = 'Zhijian Li'
 release = get_version("../../pychromvar/__init__.py")
 version = get_version("../../pychromvar/__init__.py")
+copyright = f"{datetime.now():%Y}, {author}"
 
 # -- General configuration
 
