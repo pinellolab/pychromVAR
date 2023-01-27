@@ -38,18 +38,20 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     ), "Cannot find background peaks in the input object, please first run get_bg_peaks!"
 
     count = adata.X
-    if not isinstance(count, sparse.csr_matrix):
-        count = sparse.csr_matrix(count)
+    #if not isinstance(count, sparse.csr_matrix):
+    #    count = sparse.csr_matrix(count)
 
     logging.info('computing expectation reads per cell and peak...')
 
     a = np.sum(count, axis=0)
+    a = np.expand_dims(a, axis=0)
     a /= np.sum(count)
     b = np.sum(count, axis=1)
+    b = np.expand_dims(b, axis=1)
     expectation = sparse.csr_matrix(np.dot(b, a))
 
     logging.info('computing observed deviations...')
-    obs_dev = _compute_dev((count, expectation, adata.varm['motif_match']))[0]
+    obs_dev = _compute_dev((adata.varm['motif_match'].transpose(), count, expectation))[0]
 
     # compute background deviations for bias-correction
     logging.info('computing background deviations...')
@@ -62,8 +64,8 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     if n_jobs == 1:
         for i in tqdm(range(n_bg_peaks)):
             bg_peak_idx = adata.varm['bg_peaks'][:, i]
-            motif_match = adata.varm['motif_match'][bg_peak_idx, :]
-            bg_dev[i, :, :] = _compute_dev((count, expectation, motif_match))[0]
+            motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose()
+            bg_dev[i, :, :] = _compute_dev((motif_match, count, expectation))[0]
 
     elif n_jobs > 1:
         # prepare arguments for multiprocessing
@@ -88,19 +90,16 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     z = (obs_dev - mean_bg_dev) / std_bg_dev
     z = np.nan_to_num(z, 0)
     
-    if isinstance(data, AnnData):
-        data = MuData({"rna": data, "B": adata2})
-    else:
-        data.mod['chromvar'] = AnnData(z, dtype=np.float32)
-        data.mod['chromvar'].obs_names = adata.obs_names
-        data.mod['chromvar'].var_names = adata.uns['motif_name']
+    dev = AnnData(z, dtype=np.float32)
+    dev.obs_names = adata.obs_names
+    dev.var_names = adata.uns['motif_name']
 
-    return None
+    return dev
 
 def _compute_dev(arguments):
-    count, expectation, motif_match = arguments
+    motif_match, count, expectation = arguments
 
-    observed = np.dot(count, motif_match)
-    expected= np.dot(expectation, motif_match)
+    observed = np.dot(motif_match, count.transpose())
+    expected= np.dot(motif_match, expectation.transpose())
 
-    return (observed - expected) / expected
+    return ((observed - expected) / expected).transpose()

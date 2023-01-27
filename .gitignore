@@ -2,3 +2,5 @@ test/*
 test_old/
 Tutorial/*.h5
 pychromvar/__pycache__
+docs/source/notebooks/*.csv
+docs/source/notebooks/*.h5

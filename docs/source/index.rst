@@ -13,14 +13,14 @@ For more methdological detials, please refer to the original `paper <https://www
 
 .. toctree::
    :caption: MAIN
-   :maxdepth: 2
+   :maxdepth: 1
    :hidden:
 
    installation
 
 .. toctree::
    :caption: NOTEBOOKS
-   :maxdepth: 2
+   :maxdepth: 1
    :hidden:
 
    notebooks/run_chromVAR
