@@ -102,8 +102,3 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
 
     return None
 
-def _match_motif(scanner, seq):
-    results = scanner.scan(seq)
-
-    return results
-
