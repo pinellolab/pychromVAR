@@ -98,7 +98,8 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
             if len(results[j]) > 0 or len(results[j+n_motifs]) > 0:
                 motif_match_res[i, j] = 1
 
-    adata.varm['motif_match'] = sp.sparse.csr_matrix(motif_match_res)
+    #adata.varm['motif_match'] = sp.sparse.csr_matrix(motif_match_res)
+    adata.varm['motif_match'] = motif_match_res
 
     return None
 
