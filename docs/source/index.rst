@@ -2,11 +2,15 @@ pychromVAR
 ==============================================================
 
 pychromVAR is a python package for inferring transcription factor binding variability from 
-scATAC-seq data by implmenting the algorithm proposed in [chromVAR](https://github.com/GreenleafLab/chromVAR). 
-It is built on [anndata](https://anndata.readthedocs.io/en/latest/) and 
-[mudata](https://mudata.readthedocs.io/en/latest/) therefore can work seamlessly with [Scanpy](https://scanpy.readthedocs.io/en/stable/) and [Muon](https://muon.readthedocs.io/en/latest/) pipeline.
+scATAC-seq data by implmenting the algorithm proposed in 
+`chromVAR <https://github.com/GreenleafLab/chromVAR>`__. 
+It is built on `anndata <https://anndata.readthedocs.io/en/latest/>`__ and 
+`mudata <https://mudata.readthedocs.io/en/latest/>`__ therefore can work seamlessly 
+with `scanpy <https://scanpy.readthedocs.io/en/stable/>`__ and
+`muon <https://muon.readthedocs.io/en/latest/>`__ pipeline.
 
-For more methdological detials, please refer to the original [paper](https://www.nature.com/articles/nmeth.4401).
+
+For more methdological detials, please refer to the original `paper <https://www.nature.com/articles/nmeth.4401>`__.
 
 .. toctree::
    :caption: MAIN
