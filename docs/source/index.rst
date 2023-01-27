@@ -4,6 +4,14 @@ pychromVAR - A python package for chromVAR
 Coming sooooon!
 
 .. toctree::
+   :caption: MAIN
+   :maxdepth: 2
+   :hidden:
+
+   install.md
+
+.. toctree::
+   :caption: NOTEBOOKS
    :maxdepth: 2
    :hidden:
 
