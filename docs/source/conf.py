@@ -59,14 +59,12 @@ html_theme_options = dict(
 )
 html_context = dict(
     display_github=True,  # Integrate GitHub
-    github_user='saezlab',  # Username
-    github_repo='decoupler-py',  # Repo name
-    github_version='master',  # Version
+    github_user='lzj1769',  # Username
+    github_repo='pychromVAR',  # Repo name
+    github_version='develop',  # Version
     conf_py_path='/docs/source/',  # Path in the checkout to the docs root
 )
 html_show_sphinx = False
-html_logo = 'logo.png'
-html_favicon = 'logo.png'
 html_css_files = [
     'css/custom.css',
 ]
