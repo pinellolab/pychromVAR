@@ -18,6 +18,6 @@ pip install pychromvar
 
 # Tutorial
 
-You can find [here](https://github.com/lzj1769/pychromVAR/blob/main/tutorial/tutorial.ipynb) a tutorial how to use pychromVAR combined with Muon to analysis multimodal single-cell PBMC data.
+You can find [here](https://pychromvar.readthedocs.io/en/latest/notebooks/multimodal_pbmc_3k.html) a tutorial how to use pychromVAR combined with Muon to analysis multimodal single-cell PBMC data.
 
 
