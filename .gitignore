@@ -2,3 +2,8 @@ test/*
 test_old/
 Tutorial/*.h5
 pychromvar/__pycache__
+docs/source/notebooks/*.csv
+docs/source/notebooks/*.h5
+docs/source/notebooks/.ipynb_checkpoints/*
+docs/source/notebooks/*.fa
+docs/source/notebooks/*.fa.fai

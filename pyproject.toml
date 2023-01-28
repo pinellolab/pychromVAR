@@ -26,7 +26,8 @@ dependencies = [
     "muon",
     "biopython",
     "MOODS-python",
-    "pysam"
+    "pysam",
+    "wget"
 ]
 
 [project.urls]
