@@ -19,7 +19,7 @@ For more methdological detials, please refer to the original `paper <https://www
    installation
 
 .. toctree::
-   :caption: NOTEBOOKS
+   :caption: Compare with chromVAR
    :maxdepth: 2
    :hidden:
 
