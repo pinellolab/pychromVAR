@@ -1,4 +1,4 @@
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __version_info__ = tuple([int(num) for num in __version__.split('.')])  # noqa: F401
 
 from .preprocessing import *
