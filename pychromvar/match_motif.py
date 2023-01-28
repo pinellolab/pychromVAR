@@ -90,16 +90,13 @@ def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_val
     # create scanner
     scanner = MOODS.scan.Scanner(7)
     scanner.set_motifs(matrices=matrices, bg=bg, thresholds=thresholds)
-    motif_match_res = np.zeros(shape=(adata.n_vars, n_motifs), dtype=np.uint8)
+    adata.varm['motif_match'] = np.zeros(shape=(adata.n_vars, n_motifs), dtype=np.uint8)
 
     for i in tqdm(range(adata.n_vars)):
         results = scanner.scan(adata.uns['peak_seq'][i])
         for j in range(n_motifs):
             if len(results[j]) > 0 or len(results[j+n_motifs]) > 0:
-                motif_match_res[i, j] = 1
-
-    #adata.varm['motif_match'] = sp.sparse.csr_matrix(motif_match_res)
-    adata.varm['motif_match'] = motif_match_res
+                adata.varm['motif_match'][i, j] = 1
 
     return None
 

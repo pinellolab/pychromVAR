@@ -20,7 +20,8 @@ For more methdological detials, please refer to the original `paper <https://www
 
 .. toctree::
    :caption: NOTEBOOKS
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
 
    notebooks/run_chromVAR
+   notebooks/compare_with_chromVAR
