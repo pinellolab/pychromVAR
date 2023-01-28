@@ -12,14 +12,14 @@ with `scanpy <https://scanpy.readthedocs.io/en/stable/>`__ and
 For more methdological detials, please refer to the original `paper <https://www.nature.com/articles/nmeth.4401>`__.
 
 .. toctree::
-   :caption: MAIN
+   :caption: mail
    :maxdepth: 1
    :hidden:
 
    installation
 
 .. toctree::
-   :caption: Compare with chromVAR
+   :caption: benchmark
    :maxdepth: 1
    :hidden:
 
