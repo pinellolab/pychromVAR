@@ -113,11 +113,9 @@ def compute_expectation(count: np.array) -> np.array:
     """
 
     a = np.sum(count, axis=0, keepdims=True)
-    #a = np.expand_dims(a, axis=0)
     a /= np.sum(count)
 
     b = np.sum(count, axis=1, keepdims=True)
-    #b = np.expand_dims(b, axis=1)
 
     exp = np.dot(b, a)
 
