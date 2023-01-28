@@ -36,7 +36,7 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     ), "Cannot find background peaks in the input object, please first run get_bg_peaks!"
 
     if isinstance(adata.X, sparse.csr_matrix):
-        adata.X = adata.X.todense()
+        adata.X = np.array(adata.X.todense())
 
     logging.info('computing expectation reads per cell and peak...')
     expectation = compute_expectation(count=adata.X)
@@ -112,12 +112,12 @@ def compute_expectation(count: np.array) -> np.array:
         count (_type_): _description_
     """
 
-    a = np.sum(count, axis=0)
-    a = np.expand_dims(a, axis=0)
+    a = np.sum(count, axis=0, keepdims=True)
+    #a = np.expand_dims(a, axis=0)
     a /= np.sum(count)
 
-    b = np.sum(count, axis=1)
-    b = np.expand_dims(b, axis=1)
+    b = np.sum(count, axis=1, keepdims=True)
+    #b = np.expand_dims(b, axis=1)
 
     exp = np.dot(b, a)
 

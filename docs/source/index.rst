@@ -19,9 +19,12 @@ For more methdological detials, please refer to the original `paper <https://www
    installation
 
 .. toctree::
-   :caption: benchmark
+   :caption: notebooks
    :maxdepth: 1
    :hidden:
 
    notebooks/run_chromVAR
    notebooks/compare_with_chromVAR
+   notebooks/multimodal_pbmc_3k
+
+   
