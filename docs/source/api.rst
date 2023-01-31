@@ -1,5 +1,11 @@
-The pychromVAR API reference
+API
 =============================
 
 .. automodule:: pychromvar
+   :members:
+
+Preprocessing
+------------------
+
+.. automodule:: pychromvar.preprocessing
    :members:
