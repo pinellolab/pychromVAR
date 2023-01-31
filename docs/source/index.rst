@@ -12,7 +12,7 @@ with `scanpy <https://scanpy.readthedocs.io/en/stable/>`__ and
 For more methdological detials, please refer to the original `paper <https://www.nature.com/articles/nmeth.4401>`__.
 
 .. toctree::
-   :caption: mail
+   :caption: pychromvar
    :maxdepth: 1
    :hidden:
 

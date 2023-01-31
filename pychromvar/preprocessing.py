@@ -9,16 +9,30 @@ from pysam import Fastafile
 from tqdm import tqdm
 from pynndescent import NNDescent
 
-def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
-    """
-    Find background peaks based on GC bias and number of reads per peak
 
-    :param data: AnnData object with peak counts or MuData object with 'atac' modality
-    :param niterations: niterations (int, optional): Number of background peaks to sample, defaults to 50
-    :param n_jobs: Number of cpus for compute. If set to -1, all cpus will be used, defaults to -1
-    :raises TypeError: Expected AnnData or MuData object with 'atac' modality
-    :return: None
+def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
+    """Find background peaks based on GC bias and number of reads per peak
+
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality
+    niterations : int, optional
+        Number of background peaks to sample,, by default 50
+    n_jobs : int, optional
+        Number of cpus for compute. If set to -1, all cpus will be used, by default -1
+
+    Returns
+    -------
+    _type_
+        _description_
+
+    Raises
+    ------
+    TypeError
+        Expected AnnData or MuData object with 'atac' modality
     """
+
     if isinstance(data, AnnData):
         adata = data
     elif isinstance(data, MuData) and "atac" in data.mod:
