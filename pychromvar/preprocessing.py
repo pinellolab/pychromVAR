@@ -18,10 +18,11 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
             AnnData object with peak counts or MuData object with 'atac' modality.
         niterations (int, optional): 
             Number of background peaks to sample. Defaults to 50.
-        n_jobs:
+        n_jobs: (int):
+            Number of cpus for compute. If set to -1, all cpus will be used. Default: -1
 
     Raises:
-        TypeError: _description_
+        TypeError: "Expected AnnData or MuData object with 'atac' modality"
     """
     if isinstance(data, AnnData):
         adata = data
