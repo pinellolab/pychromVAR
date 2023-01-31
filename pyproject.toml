@@ -25,6 +25,7 @@ dependencies = [
     "scipy",
     "mudata",
     "scanpy",
+    "scikit-learn",
     "muon",
     "biopython",
     "MOODS-python",
