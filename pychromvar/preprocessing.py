@@ -57,20 +57,25 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
     return None
 
-
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     """
     Add the DNA sequence of each peak to data object. 
     The sequences will be used in GC bias estimation and motif binding sites matching.
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        genome_file (str): 
-            Filename of genome reference
-        delimiter (str, optional): 
-            Delimiter that separates peaks. Defaults to "-".
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+    genome_file : str
+        Filename of genome reference
+    delimiter : str, optional
+        Delimiter that separates peaks, by default "-"
+
+    Returns
+    -------
+    Update `data`
     """
+
 
     if isinstance(data, AnnData):
         adata = data
@@ -89,16 +94,17 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
 
     return None
 
-
 def add_gc_bias(data: Union[AnnData, MuData]):
-    """
-    Compute GC bias for each peak.
+    """Compute GC bias for each peak.
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-    Returns:
-        _type_: _description_
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+
+    Returns
+    -------
+    Update data
     """
 
     if isinstance(data, AnnData):
