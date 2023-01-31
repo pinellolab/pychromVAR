@@ -11,18 +11,13 @@ from pynndescent import NNDescent
 
 def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
     """
-    Find background peaks based on GC bias.
+    Find background peaks based on GC bias and number of reads per peak.
 
-    Args:
-        data (Union[AnnData, MuData]):
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        niterations (int, optional): 
-            Number of background peaks to sample. Defaults to 50.
-        n_jobs: (int):
-            Number of cpus for compute. If set to -1, all cpus will be used. Default: -1
+    :parameter data (Union[AnnData, MuData]): AnnData object with peak counts or MuData object with 'atac' modality.
+    :parameter niterations (int, optional): Number of background peaks to sample. Defaults to 50.
+    :parameter n_jobs: (int): Number of cpus for compute. If set to -1, all cpus will be used. Default: -1
 
-    Raises:
-        TypeError: "Expected AnnData or MuData object with 'atac' modality"
+    :return: None
     """
     if isinstance(data, AnnData):
         adata = data
