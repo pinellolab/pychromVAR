@@ -9,20 +9,25 @@ from pysam import Fastafile
 from tqdm import tqdm
 from pynndescent import NNDescent
 
+
 def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
-    """
-    Find background peaks based on GC bias.
+    """Find background peaks based on GC bias and number of reads per peak
 
-    Args:
-        data (Union[AnnData, MuData]):
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        niterations (int, optional): 
-            Number of background peaks to sample. Defaults to 50.
-        n_jobs:
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality
+    niterations : int, optional
+        Number of background peaks to sample,, by default 50
+    n_jobs : int, optional
+        Number of cpus for compute. If set to -1, all cpus will be used, by default -1
 
-    Raises:
-        TypeError: _description_
+    Returns
+    -------
+
+    updates `data`.
     """
+
     if isinstance(data, AnnData):
         adata = data
     elif isinstance(data, MuData) and "atac" in data.mod:
@@ -54,18 +59,22 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
 
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
-    """
-    Add the DNA sequence of each peak to data object. 
-    The sequences will be used in GC bias estimation and motif binding sites matching.
+    """Add the DNA sequence of each peak to data object. 
+    
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+    genome_file : str
+        Filename of genome reference
+    delimiter : str, optional
+        Delimiter that separates peaks, by default "-"
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        genome_file (str): 
-            Filename of genome reference
-        delimiter (str, optional): 
-            Delimiter that separates peaks. Defaults to "-".
+    Returns
+    -------
+    Update `data`
     """
+
 
     if isinstance(data, AnnData):
         adata = data
@@ -86,14 +95,16 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
 
 
 def add_gc_bias(data: Union[AnnData, MuData]):
-    """
-    Compute GC bias for each peak.
+    """Compute GC bias for each peak.
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-    Returns:
-        _type_: _description_
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+
+    Returns
+    -------
+    Update data
     """
 
     if isinstance(data, AnnData):

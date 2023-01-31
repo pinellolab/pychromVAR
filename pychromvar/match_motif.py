@@ -13,28 +13,28 @@ _BACKGROUND = Literal["subject", "genome", "even"]
 
 def match_motif(data: Union[AnnData, MuData], motifs, pseudocounts=0.0001, p_value=5e-05,
                 background: _BACKGROUND = "even", genome_file: str = None):
-    """
-    Perform motif matching to predict binding sites using MOODS. 
-    This function wraps 
+    """Perform motif matching to predict binding sites using MOODS. 
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        motifs: 
-            List of motifs
-        pseudocounts:
-            Pseudocounts for each nucleotide. Default value is 0.0001
-        p_value:
-            P-value threshold for motif matching. Default: 5e-05
-        background:
-            Background distribution of nucleotides for computing thresholds from p-value. 
-            Three options are available: "subject" to use the subject sequences, "genome" to use the
-            whole genome (need to provide a genome file), or even using 0.25 for each base.
-            Default: "subject".
-        genome_file:
-            If background is set to genome, a genome file must be provided. Default: None
-        n_jobs:
-            Number of cpus used for motif matching. If set to -1, all cpus will be used. Default: 1
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+    motifs : _type_
+        List of motifs
+    pseudocounts : float, optional
+        Pseudocounts for each nucleotide, by default 0.0001
+    p_value : _type_, optional
+        _description_, by default 5e-05
+    background : _BACKGROUND, optional
+        Background distribution of nucleotides for computing thresholds from p-value. 
+        Three options are available: "subject" to use the subject sequences, "genome" to use the
+        whole genome (need to provide a genome file), or even using 0.25 for each base, by default "even"
+    genome_file : str, optional
+        If background is set to genome, a genome file must be provided, by default None
+
+    Returns
+    -------
+    Update data.
     """
 
     if isinstance(data, AnnData):

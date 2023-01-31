@@ -13,17 +13,16 @@ genome_url = {
 }
 
 def get_genome(genome:str="hg38", output_dir:str=None):
-    """
-    Download genome
+    """Download genome
 
-    Args:
-        genome (str, optional): 
-            Which genome should be downloaded. Available options are: "hg19", "hg38", "mm9", "mm10".
-            Defaults to "hg38".
-
-        output_dir (str):
-            Output directory. Default: current directory.
+    Parameters
+    ----------
+    genome : str, optional
+        Which genome should be downloaded, Available options are: "hg19", "hg38", "mm9", "mm10". By default "hg38"
+    output_dir : str, optional
+        Output directory. Default: current directory.
     """
+
     assert genome in ["hg19", "hg38", "mm10", "mm39"], f"Cannot find {genome}!"
 
     if not os.path.exists(output_dir):

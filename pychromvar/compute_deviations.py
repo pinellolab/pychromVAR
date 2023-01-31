@@ -12,15 +12,20 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 
-def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
-    """
-    Compute raw and bias-corrected deviations.
+def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1) -> AnnData:
+    """Compute raw and bias-corrected deviations.
 
-    Args:
-        data (Union[AnnData, MuData]): 
-            AnnData object with peak counts or MuData object with 'atac' modality.
-        n_jobs:
-            Number of cpus used for motif matching. If set to -1, all cpus will be used. Default: -1
+    Parameters
+    ----------
+    data : Union[AnnData, MuData]
+        AnnData object with peak counts or MuData object with 'atac' modality.
+    n_jobs : int, optional
+        Number of cpus used for motif matching. If set to -1, all cpus will be used. Default: -1.
+
+    Returns
+    -------
+    Anndata
+        An anndata object containing estimated deviations.
     """
 
     if isinstance(data, AnnData):
@@ -60,7 +65,8 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
     if n_jobs == 1:
         for i in range(n_bg_peaks):
             bg_peak_idx = adata.varm['bg_peaks'][:, i]
-            bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose()
+            bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose(
+            )
             bg_dev[i, :, :] = _compute_dev((bg_motif_match, adata.X.transpose(),
                                             expectation.transpose())).transpose()
 
@@ -69,8 +75,10 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1):
         arguments_list = list()
         for i in range(n_bg_peaks):
             bg_peak_idx = adata.varm['bg_peaks'][:, i]
-            bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose()
-            arguments = (bg_motif_match, adata.X.transpose(), expectation.transpose())
+            bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose(
+            )
+            arguments = (bg_motif_match, adata.X.transpose(),
+                         expectation.transpose())
             arguments_list.append(arguments)
 
         # run the function with multiple cpus
@@ -105,11 +113,17 @@ def _compute_dev(arguments):
 
 def compute_expectation(count: np.array) -> np.array:
     """
-    Compute expetation accessibility per peak and per cell by assuming identical 
-    read probability per peak for each cell with a sequencing depth matched to that cell
-    observed sequencing depth.
-    Args:
-        count (_type_): _description_
+    Compute expetation accessibility per peak and per cell by assuming identical read probability per peak for each cell with a sequencing depth matched to that cell observed sequencing depth
+
+    Parameters
+    ----------
+    count : np.array
+        Count matrix containing raw accessibility data.
+
+    Returns
+    -------
+    np.array
+        Expectation matrix
     """
 
     a = np.sum(count, axis=0, keepdims=True)

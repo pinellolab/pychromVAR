@@ -25,6 +25,7 @@ dependencies = [
     "scipy",
     "mudata",
     "scanpy",
+    "scikit-learn",
     "muon",
     "biopython",
     "MOODS-python",
@@ -34,3 +35,4 @@ dependencies = [
 
 [project.urls]
 Source = "https://github.com/lzj1769/pychromVAR"
+Documentation = "https://pychromvar.readthedocs.io/en/latest/"

@@ -1,6 +1,6 @@
 import numpy as np
 
-from pychromvar.compute_deviations import *
+from pychromvar.compute_deviations import compute_expectation
 
 def test_compute_expectation():
     count = np.array([[1, 0, 1, ], [0, 1, 1]], dtype=np.float32)
