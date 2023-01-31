@@ -17,6 +17,7 @@ For more methdological detials, please refer to the original `paper <https://www
    :hidden:
 
    installation
+   api
 
 .. toctree::
    :caption: notebooks
