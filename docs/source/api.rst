@@ -13,3 +13,11 @@ Preprocessing
    get_bg_peaks
    add_peak_seq
    add_gc_bias
+
+Motif match
+------------------
+
+.. autosummary::
+   :toctree: generated
+
+   match_motif
