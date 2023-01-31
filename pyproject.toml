@@ -21,6 +21,8 @@ classifiers = [
 requires-python = ">= 3.6"
 dependencies = [
     "anndata",
+    "numpy",
+    "scipy",
     "mudata",
     "scanpy",
     "muon",
