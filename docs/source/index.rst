@@ -11,12 +11,24 @@ with `scanpy <https://scanpy.readthedocs.io/en/stable/>`__ and
 
 For more methdological detials, please refer to the original `paper <https://www.nature.com/articles/nmeth.4401>`__.
 
+Installation
+============
+
+**pychromVAR** requires Python version >= 3.8 to run.
+
+PyPI
+----
+**pychromVAR** is also available on PyPI:
+
+.. code-block:: console
+
+   pip install pychromvar
+
 .. toctree::
    :caption: pychromvar
    :maxdepth: 1
    :hidden:
-
-   installation
+   
    api
 
 .. toctree::
