@@ -34,7 +34,7 @@ def get_genome(genome:str="hg38", output_dir:str=None):
         os.remove(output_fname)
 
     gz_fname = os.path.join(output_dir, f"{genome}.fa.gz")
-    wget.download(genome_url[genome], gz_fname, bar=bar_thermometer)
+    wget.download(genome_url[genome], gz_fname)
 
     output_fname = os.path.join(output_dir, f"{genome}.fa")
     with open(output_fname, "w") as f:
