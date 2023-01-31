@@ -24,13 +24,8 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
     Returns
     -------
-    _type_
-        _description_
 
-    Raises
-    ------
-    TypeError
-        Expected AnnData or MuData object with 'atac' modality
+    updates `data`.
     """
 
     if isinstance(data, AnnData):
