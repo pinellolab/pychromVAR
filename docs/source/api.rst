@@ -21,3 +21,20 @@ Motif match
    :toctree: generated
 
    match_motif
+
+Genome
+------------------
+
+.. autosummary::
+   :toctree: generated
+
+   get_genome
+
+Compute deviation
+------------------
+
+.. autosummary::
+   :toctree: generated
+
+   compute_deviations
+   compute_expectation
