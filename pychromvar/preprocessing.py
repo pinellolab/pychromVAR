@@ -57,9 +57,9 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
     return None
 
+
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
-    """
-    Add the DNA sequence of each peak to data object. 
+    """Add the DNA sequence of each peak to data object. 
     
     Parameters
     ----------
@@ -92,6 +92,7 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
         adata.uns['peak_seq'][i] = fasta.fetch(chrom, start, end).upper()
 
     return None
+
 
 def add_gc_bias(data: Union[AnnData, MuData]):
     """Compute GC bias for each peak.
