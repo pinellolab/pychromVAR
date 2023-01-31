@@ -1,4 +1,4 @@
-pychromVAR
+Welcome to pychromVAR's documentation!
 ==============================================================
 
 pychromVAR is a python package for inferring transcription factor binding variability from 

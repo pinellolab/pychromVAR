@@ -7,5 +7,9 @@ API
 Preprocessing
 ------------------
 
-.. automodule:: pychromvar.preprocessing
-   :members:
+.. autosummary::
+   :toctree: generated
+
+   get_bg_peaks
+   add_peak_seq
+   add_gc_bias
