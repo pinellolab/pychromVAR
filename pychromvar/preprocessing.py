@@ -60,8 +60,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     """
     Add the DNA sequence of each peak to data object. 
-    The sequences will be used in GC bias estimation and motif binding sites matching.
-
+    
     Parameters
     ----------
     data : Union[AnnData, MuData]
