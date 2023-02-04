@@ -49,7 +49,7 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1) -> AnnData:
     logging.info('computing observed motif deviations...')
     motif_match = adata.varm['motif_match'].transpose()
 
-    obs_dev = _compute_dev(
+    obs_dev = _compute_deviations(
         (motif_match, adata.X.transpose(), expectation.transpose())).transpose()
 
     # compute background deviations for bias-correction
@@ -67,7 +67,7 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1) -> AnnData:
             bg_peak_idx = adata.varm['bg_peaks'][:, i]
             bg_motif_match = adata.varm['motif_match'][bg_peak_idx, :].transpose(
             )
-            bg_dev[i, :, :] = _compute_dev((bg_motif_match, adata.X.transpose(),
+            bg_dev[i, :, :] = _compute_deviations((bg_motif_match, adata.X.transpose(),
                                             expectation.transpose())).transpose()
 
     elif n_jobs > 1:
@@ -83,7 +83,7 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1) -> AnnData:
 
         # run the function with multiple cpus
         with Pool(processes=n_jobs) as pool:
-            all_results = pool.map(_compute_dev, arguments_list)
+            all_results = pool.map(_compute_deviations, arguments_list)
 
         # parse the results
         for i in range(n_bg_peaks):
@@ -102,7 +102,7 @@ def compute_deviations(data: Union[AnnData, MuData], n_jobs=-1) -> AnnData:
     return dev
 
 
-def _compute_dev(arguments):
+def _compute_deviations(arguments):
     motif_match, count, expectation = arguments
 
     observed = np.dot(motif_match, count)
@@ -134,3 +134,4 @@ def compute_expectation(count: np.array) -> np.array:
     exp = np.dot(b, a)
 
     return exp
+    

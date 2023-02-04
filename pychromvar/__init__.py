@@ -1,4 +1,4 @@
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __version_info__ = tuple([int(num) for num in __version__.split('.')])  # noqa: F401
 
 from .preprocessing import get_bg_peaks, add_gc_bias, add_peak_seq
