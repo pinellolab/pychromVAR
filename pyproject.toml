@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "pychromvar"
-version = "0.0.3"
+version = "0.0.4"
 description = "A python package for chromVAR"
 authors = [
     {name = "Zhijian Li", email = "lzj1769@gmail.com"}
@@ -18,14 +18,14 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Intended Audience :: Science/Research"
 ]
-requires-python = ">= 3.6"
+requires-python = ">= 3.8"
 dependencies = [
+    "scikit-learn",
     "anndata",
     "numpy",
     "scipy",
     "mudata",
     "scanpy",
-    "scikit-learn",
     "muon",
     "biopython",
     "MOODS-python",
