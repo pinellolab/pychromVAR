@@ -1,18 +1,18 @@
 import os
-import wget
 import gzip
-from tqdm import tqdm
+import wget
 
-base_url = "https://ftp.ebi.ac.uk/pub/databases/gencode"
+BASE_URL = "https://ftp.ebi.ac.uk/pub/databases/gencode"
 
 genome_url = {
-    "hg19": f"{base_url}/Gencode_human/release_42/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz",
-    "hg38": f"{base_url}/Gencode_human/release_42/GRCh38.primary_assembly.genome.fa.gz",
-    "mm10": f"{base_url}/Gencode_mouse/release_M1/NCBIM37.genome.fa.gz",
-    "mm39": f"{base_url}/Gencode_mouse/release_M31/GRCm39.primary_assembly.genome.fa.gz"
+    "hg19": f"{BASE_URL}/Gencode_human/release_42/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz",
+    "hg38": f"{BASE_URL}/Gencode_human/release_42/GRCh38.primary_assembly.genome.fa.gz",
+    "mm10": f"{BASE_URL}/Gencode_mouse/release_M1/NCBIM37.genome.fa.gz",
+    "mm39": f"{BASE_URL}/Gencode_mouse/release_M31/GRCm39.primary_assembly.genome.fa.gz"
 }
 
-def get_genome(genome:str="hg38", output_dir:str=None):
+
+def get_genome(genome: str = "hg38", output_dir: str = None):
     """Download genome
 
     Parameters

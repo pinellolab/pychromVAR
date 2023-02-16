@@ -1,8 +1,7 @@
+from typing import Union
+import re
 import numpy as np
 import scipy as sp
-import re
-
-from typing import Union
 from anndata import AnnData
 from mudata import MuData
 from pysam import Fastafile
