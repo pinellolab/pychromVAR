@@ -16,6 +16,10 @@ The quickest and easiest way to get pychromvar is to to use pip:
 pip install pychromvar
 ```
 
+# Ecosystem
+
+pychromVAR is part of [scverse](https://scverse.org/packages/#ecosystem) ecosystem.
+
 # Tutorial
 
 You can find [here](https://pychromvar.readthedocs.io/en/latest/notebooks/multimodal_pbmc_3k.html) a tutorial how to use pychromVAR combined with Muon to analysis multimodal single-cell PBMC data.
