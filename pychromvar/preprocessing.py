@@ -1,8 +1,7 @@
+from typing import Union
+import re
 import numpy as np
 import scipy as sp
-import re
-
-from typing import Union
 from anndata import AnnData
 from mudata import MuData
 from pysam import Fastafile
@@ -50,7 +49,8 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
     trans_norm_mat = sp.linalg.solve_triangular(
         a=chol_cov_mat, b=mat, lower=True).transpose()
 
-    index = NNDescent(trans_norm_mat, metric="euclidean", n_neighbors=niterations, n_jobs=n_jobs)
+    index = NNDescent(trans_norm_mat, metric="euclidean",
+                      n_neighbors=niterations, n_jobs=n_jobs)
     knn_idx, _ = index.query(trans_norm_mat, niterations)
 
     adata.varm['bg_peaks'] = knn_idx
@@ -60,7 +60,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     """Add the DNA sequence of each peak to data object. 
-    
+
     Parameters
     ----------
     data : Union[AnnData, MuData]
@@ -75,13 +75,13 @@ def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
     Update `data`
     """
 
-
     if isinstance(data, AnnData):
         adata = data
     elif isinstance(data, MuData) and "atac" in data.mod:
         adata = data.mod["atac"]
     else:
-        raise TypeError("Expected AnnData or MuData object with 'atac' modality")
+        raise TypeError(
+            "Expected AnnData or MuData object with 'atac' modality")
 
     fasta = Fastafile(genome_file)
     adata.uns['peak_seq'] = [None] * adata.n_vars
@@ -112,9 +112,11 @@ def add_gc_bias(data: Union[AnnData, MuData]):
     elif isinstance(data, MuData) and "atac" in data.mod:
         adata = data.mod["atac"]
     else:
-        raise TypeError("Expected AnnData or MuData object with 'atac' modality")
+        raise TypeError(
+            "Expected AnnData or MuData object with 'atac' modality")
 
-    assert "peak_seq" in adata.uns_keys(), "Cannot find sequences, please first run add_peak_seq!"
+    assert "peak_seq" in adata.uns_keys(
+    ), "Cannot find sequences, please first run add_peak_seq!"
 
     bias = np.zeros(adata.n_vars)
 

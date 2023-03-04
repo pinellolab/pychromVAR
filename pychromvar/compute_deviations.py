@@ -108,12 +108,14 @@ def _compute_deviations(arguments):
     observed = np.dot(motif_match, count)
     expected = np.dot(motif_match, expectation)
 
-    return ((observed - expected) / expected)
+    return (observed - expected) / expected
 
 
 def compute_expectation(count: np.array) -> np.array:
     """
-    Compute expetation accessibility per peak and per cell by assuming identical read probability per peak for each cell with a sequencing depth matched to that cell observed sequencing depth
+    Compute expetation accessibility per peak and per cell by assuming 
+    identical read probability per peak for each cell with a sequencing 
+    depth matched to that cell observed sequencing depth
 
     Parameters
     ----------
@@ -134,4 +136,3 @@ def compute_expectation(count: np.array) -> np.array:
     exp = np.dot(b, a)
 
     return exp
-    
