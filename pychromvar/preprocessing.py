@@ -38,7 +38,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
     # check if the object contains bias in Anndata.varm
     assert "gc_bias" in adata.var.columns, "Cannot find gc bias in the input object, please first run add_gc_bias!"
 
-    reads_per_peak = np.log10(np.sum(adata.X, axis=0))
+    reads_per_peak = np.log1p(adata.X.sum(axis=0)) / np.log(10)
 
     # here if reads_per_peak is a numpy matrix, convert it to array
     if isinstance(reads_per_peak, np.matrix):
@@ -59,7 +59,7 @@ def get_bg_peaks(data: Union[AnnData, MuData], niterations=50, n_jobs=-1):
 
 
 def add_peak_seq(data: Union[AnnData, MuData], genome_file: str, delimiter="-"):
-    """Add the DNA sequence of each peak to data object. 
+    """Add the DNA sequence of each peak to data object.
 
     Parameters
     ----------
